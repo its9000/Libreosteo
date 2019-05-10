@@ -83,7 +83,7 @@ examination.controller('ExaminationCtrl', ['$scope', '$routeParams', 'Examinatio
   $scope.examination = ExaminationServ.get({
     examinationId: $routeParams.examinationId
   }, function(data) {
-    data.date = convertUTCDateToLocalDate(new Date(data.date));
+    data.date = new Date(data.date);
     return data;
   });
 }]);
@@ -181,6 +181,10 @@ examination.directive('examination', ['ExaminationServ', function(ExaminationSer
         $scope.updateDeleteTrigger();
       });
 
+      $scope.$watch('model.date', function(newValue, oldValue) {
+        console.log("newValue = "+newValue+", oldValue = "+oldValue);
+      });
+
       $scope.updateDeleteTrigger = function() {
         if ($scope.model == null) {
           $scope.triggerEditForm.delete = false;
@@ -264,7 +268,9 @@ examination.directive('examination', ['ExaminationServ', function(ExaminationSer
         angular.forEach(els, function(el) {
           var jqEl = $(el);
           if (jqEl.is(':visible')) {
-            jqEl.updatePolyfill();
+            if (jqEl.updatePolyfill) {
+              jqEl.updatePolyfill();
+            }
           }
         });
       };

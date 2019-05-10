@@ -156,7 +156,10 @@ libreosteoApp.controller('MainController', ['$scope', 'loEditFormManager', funct
     $('[type="date"].birthdate').prop('max', function() {
       return new Date().toJSON().split('T')[0];
     });
-    $('body').updatePolyfill();
+    var jqEl = $('body');
+    if (jqEl.updatePolyfill) {
+      jqEl.updatePolyfill();
+    }
   });
 
   $scope.editFormManager = loEditFormManager;

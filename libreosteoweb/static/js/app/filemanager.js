@@ -170,7 +170,9 @@ fileManager.directive('fileManager', ['FileServ', 'Upload', '$filter', function(
         angular.forEach(els, function(el) {
           var jqEl = $(el);
           if (jqEl.is(':visible')) {
-            jqEl.updatePolyfill();
+            if (jqEl.updatePolyfill) {
+              jqEl.updatePolyfill();
+            }
           }
         });
       }

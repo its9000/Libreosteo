@@ -112,13 +112,13 @@ patient.filter('format_age', function() {
       var mois = '';
       var jour = '';
       if (input.year) {
-        ans = input.year + " ans";
+        ans = input.year + gettext(" ans");
       }
       if (input.month) {
-        mois = input.month + " mois";
+        mois = input.month + gettext(" mois");
       }
       if (input.day) {
-        jour = input.day + " jours";
+        jour = input.day + gettext(" jours");
       }
       out = ans || '';
       if (ans) {
@@ -228,7 +228,9 @@ patient.controller('PatientCtrl', ['$scope', '$state', '$stateParams', '$filter'
       angular.forEach(els, function(el) {
         var jqEl = $(el);
         if (jqEl.is(':visible')) {
-          jqEl.updatePolyfill();
+          if (jqEl.updatePolyfill) {
+            jqEl.updatePolyfill();
+          }
         }
       });
     }
@@ -323,12 +325,10 @@ patient.controller('PatientCtrl', ['$scope', '$state', '$stateParams', '$filter'
       newExaminationDisplay: false,
       examinationsListDisplay: false,
       newExaminationActive: function() {
-        this.examinationsListDisplay = false;
         this.newExaminationDisplay = true;
       },
       examinationsListActive: function() {
         this.examinationsListDisplay = true;
-        this.newExaminationDisplay = false;
       }
     };
 
@@ -383,7 +383,6 @@ patient.controller('PatientCtrl', ['$scope', '$state', '$stateParams', '$filter'
 
     // Handle the examination object to be saved.
     $scope.saveExamination = function(examinationToSave) {
-      //$scope.examination.date = $filter('date')($scope.examination.date, 'yyyy-MM-dd');
       if (!examinationToSave) {
         examinationToSave = $scope.newExamination;
       }
@@ -401,10 +400,12 @@ patient.controller('PatientCtrl', ['$scope', '$state', '$stateParams', '$filter'
         }, examinationToSave, function(value) {
           $scope.examinations = $scope.getOrderedExaminations($stateParams.patientId);
         });
+        localExamination.date = new Date(localExamination.date);
       }
       $scope.updateDeleteTrigger();
       if (!examinationToSave) {
-        $scope.newExamination = localExamination;
+        console.log("copy into newExamination the result");
+        angular.copy(localExamination, $scope.newExamination);
       }
       return localExamination;
     };
@@ -470,7 +471,7 @@ patient.controller('PatientCtrl', ['$scope', '$state', '$stateParams', '$filter'
         });
 
       }
-      if ($scope.examinationsTab.newExaminationDisplay) {
+      if ($scope.examinationsTab.newExaminationDisplay && $scope.indexTab == 6) { // The delete was performed on the newExamination
         // Hide the in progress examination
         Object.keys($scope.newExamination).forEach(function(key) {
           delete $scope.newExamination[key];
@@ -478,7 +479,7 @@ patient.controller('PatientCtrl', ['$scope', '$state', '$stateParams', '$filter'
         $scope.examinationsTab.newExaminationDisplay = false;
         $scope.indexTab = 5;
       }
-      if ($scope.examinationsTab.examinationsListDisplay) {
+      if ($scope.examinationsTab.examinationsListDisplay && $scope.indexTab == 5) { // The delete was performed on the archiveExamination displayed
         $scope.previousExamination.data = null;
         $state.go('patient.examinations');
       }
