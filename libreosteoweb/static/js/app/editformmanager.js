@@ -1,4 +1,3 @@
-
 /**
     This file is part of Libreosteo.
 
@@ -57,7 +56,7 @@ editFormManager.factory('loEditFormManager', function() {
         }
       });
       var idx_form = forms.indexOf(form);
-      if (trigger) 
+      if (trigger)
         triggers_form[idx_form] = trigger;
     },
     isavailable: function() {
@@ -147,7 +146,7 @@ editFormManager.directive('editFormControl', ['$timeout', function($timeout) {
       if (!attr.delete) {
         attr.delete = null;
       }
-      if(!attr.saveOnLostFocus){
+      if (!attr.saveOnLostFocus) {
         attr.saveOnLostFocus = false;
       }
     },
@@ -183,13 +182,11 @@ editFormManager.directive('editFormControl', ['$timeout', function($timeout) {
         observer.observe($($element).get(0), config);
       });
 
-      $scope.lostFocusMgr = function()
-      {
+      $scope.lostFocusMgr = function() {
         // When the component changes from isavailable true to isavailable false, and 
         // in edit mode, then call save action if flag is saveOnLostFocus is true
-        if ($scope.saveOnLostFocus)
-        {
-          if(! $($element).is(':visible') && $scope.trigger.save){
+        if ($scope.saveOnLostFocus) {
+          if (!$($element).is(':visible') && $scope.trigger.save) {
             $scope.save();
             $scope.trigger.save = false;
           }
@@ -202,15 +199,15 @@ editFormManager.directive('editFormControl', ['$timeout', function($timeout) {
 editFormManager.directive('disableEnter', ['$compile', function($compile) {
   return {
     restrict: 'A',
-    replace : false,
-    terminal : true,
+    replace: false,
+    terminal: true,
     priority: 1001,
     compile: function compile(element, attrs) {
       element.removeAttr('disable-enter');
       element.attr('ng-keypress', 'disableEnter($event)');
       return {
-        pre : function preLink(scope, iElement, iAttrs, controller) { },
-        post : function postLink(scope, iElement, iAttrs, controller) {
+        pre: function preLink(scope, iElement, iAttrs, controller) {},
+        post: function postLink(scope, iElement, iAttrs, controller) {
           $compile(iElement)(scope);
         }
       };

@@ -1,4 +1,3 @@
-
 /**
     This file is part of Libreosteo.
 
@@ -16,74 +15,72 @@
     along with Libreosteo.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var utils = angular.module('loUtils', []) ;
+var utils = angular.module('loUtils', []);
 
 utils.filter('translate', function() {
-	return function(input) {
-		if(input){
-			return gettext(input);
-		}
-	};
+  return function(input) {
+    if (input) {
+      return gettext(input);
+    }
+  };
 });
 
-function getFields(obj)
-{
-    "use strict";
-    var r = [] ;
-    for (var k in obj) {
-        if (!obj.hasOwnProperty(k))
-            continue;
-        r.push(k)
-    }
-    return r ;
+function getFields(obj) {
+  "use strict";
+  var r = [];
+  for (var k in obj) {
+    if (!obj.hasOwnProperty(k))
+      continue;
+    r.push(k)
+  }
+  return r;
 }
 
 function formatGrowlError(obj) {
-    "use strict";
-    var result = "";
-    var fields = getFields(obj);
+  "use strict";
+  var result = "";
+  var fields = getFields(obj);
 
-    for (var f = 0; f < fields.length; f++ ){
-        result += "<p>"+fields[f] +' :<p/>';
-        if (Array.isArray(obj[fields[f]]))
-        {
-            result += "<ul>";
-            var a = obj[fields[f]];
-            for (var l = 0 ; l < a.length; l++) {
-                result += '<li>'+a[l]+'</li>';
-            }
-            result += "</ul>";
-        } else {
-            result += "<p>"+obj[fields[f]]+"</p>";
-        }
+  for (var f = 0; f < fields.length; f++) {
+    result += "<p>" + fields[f] + ' :<p/>';
+    if (Array.isArray(obj[fields[f]])) {
+      result += "<ul>";
+      var a = obj[fields[f]];
+      for (var l = 0; l < a.length; l++) {
+        result += '<li>' + a[l] + '</li>';
+      }
+      result += "</ul>";
+    } else {
+      result += "<p>" + obj[fields[f]] + "</p>";
     }
-    return result;
+  }
+  return result;
 }
 
 String.prototype.endsWith = function(suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+  return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
 Array.prototype.find = function(predicate, thisArg) {
-    "use strict";
-    //TODO: Check predicate is a function.
-    var lastValue;
-    if(!Array.prototype.some.call(this, function(val, index, arr) {
-        return predicate.call(thisArg, lastValue = val, index, arr);
+  "use strict";
+  //TODO: Check predicate is a function.
+  var lastValue;
+  if (!Array.prototype.some.call(this, function(val, index, arr) {
+      return predicate.call(thisArg, lastValue = val, index, arr);
     })) {
-        return;
-    }
-    return lastValue;
+    return;
+  }
+  return lastValue;
 }
 
 
 function convertUTCDateToLocalDate(date) {
-    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 
-    var offset = date.getTimezoneOffset() / 60;
-    var hours = date.getHours();
+  var offset = date.getTimezoneOffset() / 60;
+  var hours = date.getHours();
 
-    newDate.setHours(hours - offset);
+  newDate.setHours(hours - offset);
 
-    return newDate;
+  return newDate;
 }

@@ -1,4 +1,3 @@
-
 /**
     This file is part of Libreosteo.
 
@@ -17,7 +16,7 @@
 */
 var directives = angular.module('loHalloEditor', []);
 
-directives.directive('halloEditor', [ '$sce', function($sce) {
+directives.directive('halloEditor', ['$sce', function($sce) {
   return {
     restrict: 'A',
     require: '?ngModel',
@@ -32,16 +31,19 @@ directives.directive('halloEditor', [ '$sce', function($sce) {
 
       // Monkey patch hallo.js enable function
       var enableOriginal = $.IKS.hallo.prototype.enable;
-      $.IKS.hallo.prototype.enable = function()
-      {
+      $.IKS.hallo.prototype.enable = function() {
         enableOriginal.apply(this);
-        this.element.css({'min-height':34});
-        this.element.css({'min-width':'auto'});
+        this.element.css({
+          'min-height': 34
+        });
+        this.element.css({
+          'min-width': 'auto'
+        });
       };
 
       ngModel.$render = function() {
-        if(!scope.isEditable){
-          if ( ngModel.$viewValue == '') {
+        if (!scope.isEditable) {
+          if (ngModel.$viewValue == '') {
             element.empty();
             element.removeClass('inEditMode');
             element.removeClass('inPlaceholderMode');
@@ -51,8 +53,7 @@ directives.directive('halloEditor', [ '$sce', function($sce) {
           }
         } else {
           element.html($sce.getTrustedHtml(ngModel.$viewValue || scope.placeholder));
-          if(ngModel.$viewValue)
-          {
+          if (ngModel.$viewValue) {
             element.removeClass('inPlaceholderMode');
             element.addClass('inEditMode');
           } else {
@@ -94,13 +95,11 @@ directives.directive('halloEditor', [ '$sce', function($sce) {
           editable: newValue
         });
 
-        if(element.html() === scope.placeholder && !newValue)
-        {
+        if (element.html() === scope.placeholder && !newValue) {
           element.empty();
         }
 
-        if(newValue)
-        {
+        if (newValue) {
           element.addClass('form-control readyForEditMode');
         } else {
           element.removeClass('form-control readyForEditMode');
@@ -109,10 +108,10 @@ directives.directive('halloEditor', [ '$sce', function($sce) {
 
       function read() {
         var html = element.html();
-        if ( html == '<br>' || html == '<br/>' || element == '') {
+        if (html == '<br>' || html == '<br/>' || element == '') {
           element.empty();
         }
-        if(html === scope.placeholder){
+        if (html === scope.placeholder) {
           element.empty();
         }
         ngModel.$setViewValue(element.html());

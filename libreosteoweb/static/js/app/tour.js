@@ -14,10 +14,10 @@
 
     You should have received a copy of the GNU General Public License
     along with Libreosteo.  If not, see <http://www.gnu.org/licenses/>.
-*/
+    */
 function open_dropdown() {
-        $('#user-toggle').parent().addClass('open');
-      };
+  $('#user-toggle').parent().addClass('open');
+};
 
 // Instance the tour
 var tour = new Tour({
@@ -26,23 +26,46 @@ var tour = new Tour({
   onEnd : function(tour){
     $('#user-toggle').parent().off('hidden.bs.dropdown', open_dropdown);
     var menu = $('#user-toggle').next('.dropdown-menu');
-      if (menu.is(":visible"))
-      {
-        $('#user-toggle').parent().removeClass('open');
-      }
+    if (menu.is(":visible"))
+    {
+      $('#user-toggle').parent().removeClass('open');
+    }
   },
 });
 
 
 function stepUserProfile() {
   return $.getJSON('/api/profiles/get_by_user').done(function(data)
-  {
-    if (!data.hasOwnProperty("adeli") || data.adeli == '') {
+    {
+      if (!data.hasOwnProperty("adeli") || data.adeli == '') {
+        tour.addStep(
+          {
+            element: "#user-profile",
+            title: "Thérapeute",
+            content: "Mettez à jour votre profil thérapeute. Le numéro ADELI est obligatoire pour les factures.",
+            backdrop : false,
+            placement: 'left',
+            orphan : true,
+            onShow : function(tour)
+            {
+              $('#user-toggle').parent().on('hidden.bs.dropdown', open_dropdown);
+              $('#user-toggle').parent().addClass('open');
+            }
+          });
+      }
+    });
+};
+
+function stepOfficeSettings() {
+  return $.getJSON('/api/settings').done(function(data){
+    if (data.length == 0 || typeof data[0].currency === 'undefined' || data[0].currency == "" ){
+      console.log("passe ici car : "+data.currency);
+      console.log(typeof data.currency === 'undefined' || data.currency == "" );
       tour.addStep(
-      {
-          element: "#user-profile",
-          title: "Thérapeute",
-          content: "Mettez à jour votre profil thérapeute. Le numéro ADELI est obligatoire pour les factures.",
+        {
+          element: "#office-settings",
+          title: "Paramétrer le cabinet",
+          content: "Afin de pouvoir générer correctement les factures, il est nécessaire de mettre à jour les informations du cabinet.",
           backdrop : false,
           placement: 'left',
           orphan : true,
@@ -50,32 +73,9 @@ function stepUserProfile() {
           {
             $('#user-toggle').parent().on('hidden.bs.dropdown', open_dropdown);
             $('#user-toggle').parent().addClass('open');
-          }
-      });
+          },
+        });
     }
-  });
-};
-
-function stepOfficeSettings() {
-  return $.getJSON('/api/settings').done(function(data){
-  if (data.length == 0 || typeof data[0].currency === 'undefined' || data[0].currency == "" ){
-    console.log("passe ici car : "+data.currency);
-    console.log(typeof data.currency === 'undefined' || data.currency == "" );
-    tour.addStep(
-    {
-      element: "#office-settings",
-      title: "Paramétrer le cabinet",
-      content: "Afin de pouvoir générer correctement les factures, il est nécessaire de mettre à jour les informations du cabinet.",
-      backdrop : false,
-      placement: 'left',
-      orphan : true,
-      onShow : function(tour)
-      {
-        $('#user-toggle').parent().on('hidden.bs.dropdown', open_dropdown);
-        $('#user-toggle').parent().addClass('open');
-      },
-    });
-  }
   });
 };
 

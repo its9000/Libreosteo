@@ -1,4 +1,3 @@
-
 /**
     This file is part of Libreosteo.
 
@@ -18,76 +17,77 @@
 var timeline = angular.module('loTimeline', ['loExamination']);
 
 // Define the directive
-timeline.directive('timeline', function()
-{
-    "use strict";
-    return {
-        restrict: 'E',
-        transclude: true,
-        scope: {
-            examinations: '=',
-            startExamination : '&',
-            examinationIsActive : '=',
-            archiveExamination : '=',
-            currentExamination : '=',
-            currentExaminationManager : '&',
-        },
-        controller : function($scope, ExaminationServ, ExaminationCommentServ, CommentServ, loEditFormManager) {
-          $scope.loadExamination = function(examinationId) {
-            if ($scope.currentExamination.id == null)
-            {
-              ExaminationServ.get({examinationId : examinationId}, function(data){
-                  $scope.archiveExamination.data = data;
-                  loEditFormManager.available = true;
+timeline.directive('timeline', function() {
+  "use strict";
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      examinations: '=',
+      startExamination: '&',
+      examinationIsActive: '=',
+      archiveExamination: '=',
+      currentExamination: '=',
+      currentExaminationManager: '&',
+    },
+    controller: function($scope, ExaminationServ, ExaminationCommentServ, CommentServ, loEditFormManager) {
+      $scope.loadExamination = function(examinationId) {
+        if ($scope.currentExamination.id == null) {
+          ExaminationServ.get({
+            examinationId: examinationId
+          }, function(data) {
+            $scope.archiveExamination.data = data;
+            $scope.archiveExamination.data.date = convertUTCDateToLocalDate(new Date(data.date));
+            loEditFormManager.available = true;
 
-              });
-            } else if ($scope.currentExamination.id == examinationId) {
-              // callback the currentExamination manager
-              $scope.currentExaminationManager();
-            } else {
-              ExaminationServ.get({examinationId : examinationId}, function(data){
-                  $scope.archiveExamination.data = data;
-                  loEditFormManager.available = true;
-                });
-            }
-          }  ;
+          });
+        } else if ($scope.currentExamination.id == examinationId) {
+          // callback the currentExamination manager
+          $scope.currentExaminationManager();
+        } else {
+          ExaminationServ.get({
+            examinationId: examinationId
+          }, function(data) {
+            $scope.archiveExamination.data = data;
+            loEditFormManager.available = true;
+          });
+        }
+      };
 
-          $scope.loadComments = function(examinationId, event) {
-            if ($scope.currentExamination.id == null || $scope.currentExamination.id != examinationId) {
-              var panelComment = $(event.target).parents(".timeline-footer").next(".timeline-panel-footer");
+      $scope.loadComments = function(examinationId, event) {
+        if ($scope.currentExamination.id == null || $scope.currentExamination.id != examinationId) {
+          var panelComment = $(event.target).parents(".timeline-footer").next(".timeline-panel-footer");
 
-              ExaminationCommentServ.query({examinationId : examinationId}, function(data){  
-                panelComment.toggleClass('hidden');
-                var examination = $scope.examinations.find(function(element, index, array)
-                  {
-                    return element.id == examinationId;
-                  });
-                examination.comments_list = data;
-              });
-              event.stopPropagation();
-            }
-          };
-          $scope.no_propagate = function(event)
-          {
-            event.stopPropagation();
-          }
+          ExaminationCommentServ.query({
+            examinationId: examinationId
+          }, function(data) {
+            panelComment.toggleClass('hidden');
+            var examination = $scope.examinations.find(function(element, index, array) {
+              return element.id == examinationId;
+            });
+            examination.comments_list = data;
+          });
+          event.stopPropagation();
+        }
+      };
+      $scope.no_propagate = function(event) {
+        event.stopPropagation();
+      }
 
-          $scope.sendComment = function(examinationId, comment)
-          {
-           var data = {
-            comment : comment,
-            examination : examinationId,
-           };
-           CommentServ.save(data, function(result) {
-              var examination = $scope.examinations.find(function(element, index, array)
-              {
-                return element.id == examinationId;
-              });
-              examination.comments_list.unshift(result);
-              examination.comments = examination.comments_list.length;
-           });
-          }
-        },
-        templateUrl: 'web-view/partials/examinations-timeline'
-    }
+      $scope.sendComment = function(examinationId, comment) {
+        var data = {
+          comment: comment,
+          examination: examinationId,
+        };
+        CommentServ.save(data, function(result) {
+          var examination = $scope.examinations.find(function(element, index, array) {
+            return element.id == examinationId;
+          });
+          examination.comments_list.unshift(result);
+          examination.comments = examination.comments_list.length;
+        });
+      }
+    },
+    templateUrl: 'web-view/partials/examinations-timeline'
+  }
 });

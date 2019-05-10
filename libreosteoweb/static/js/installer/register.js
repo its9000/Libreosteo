@@ -1,4 +1,3 @@
-
 /**
     This file is part of Libreosteo.
 
@@ -17,7 +16,6 @@
 */
 var register = angular.module('installerRegister', ['ngResource']);
 
-restore.controller('RegisterCtrl', ['$scope','$http', '$window', function($scope, $http, $window)
-{
+restore.controller('RegisterCtrl', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
 }]);

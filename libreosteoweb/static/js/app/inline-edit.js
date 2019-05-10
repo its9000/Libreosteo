@@ -21,26 +21,29 @@ inlineEdit.directive('inlineedit', function() {
     restrict: 'E',
     //transclude : true,
     scope: {
-        model : '=',
-        property: '@',
-        onSave : '&',
-        placeholder : '@',
-        editclass : '@',
-        width: '@',
-        readOnly : '=',
-	},
-    controller: function($scope)
-    {
-        "use strict";
-        $scope.displayButton = false;
-
-        $scope.saveModel = function() {
-          $scope.onSave();
-        };
+      model: '=',
+      property: '@',
+      onSave: '&',
+      placeholder: '@',
+      editclass: '@',
+      width: '@',
+      readOnly: '=',
     },
-      compile: function(element, attrs){
-          if (!attrs.width) { attrs.width = '100%'; }
-          if (!attrs.readOnly) { attrs.readOnly = false; }
+    controller: function($scope) {
+      "use strict";
+      $scope.displayButton = false;
+
+      $scope.saveModel = function() {
+        $scope.onSave();
+      };
+    },
+    compile: function(element, attrs) {
+      if (!attrs.width) {
+        attrs.width = '100%';
+      }
+      if (!attrs.readOnly) {
+        attrs.readOnly = false;
+      }
 
     },
 
@@ -53,27 +56,30 @@ inlineEdit.directive('inlinetel', function() {
     restrict: 'E',
     //transclude : true,
     scope: {
-        model : '=',
-        property: '@',
-        onSave : '&',
-        placeholder : '@',
-        editclass : '@',
-        width: '@',
-        icon : '@',
-        readOnly : '=',
-	},
-    controller: function($scope)
-    {
-        "use strict";
-        $scope.displayButton = false;
-
-        $scope.saveModel = function() {
-          $scope.onSave();
-        };
+      model: '=',
+      property: '@',
+      onSave: '&',
+      placeholder: '@',
+      editclass: '@',
+      width: '@',
+      icon: '@',
+      readOnly: '=',
     },
-    compile: function(element, attrs){
-       if (!attrs.width) { attrs.width = '100%'; }
-       if (!attrs.readOnly) { attrs.readOnly = false; }
+    controller: function($scope) {
+      "use strict";
+      $scope.displayButton = false;
+
+      $scope.saveModel = function() {
+        $scope.onSave();
+      };
+    },
+    compile: function(element, attrs) {
+      if (!attrs.width) {
+        attrs.width = '100%';
+      }
+      if (!attrs.readOnly) {
+        attrs.readOnly = false;
+      }
     },
 
     templateUrl: 'static/js/app/templates/inline-tel.html'
@@ -87,28 +93,31 @@ inlineEdit.directive('inlinetextarea', function() {
     restrict: 'E',
     //transclude : true,
     scope: {
-        model : '=',
-        property: '@',
-        onSave : '&',
-        placeholder : '@',
-        editclass : '@',
-        width: '@',
-        row : '@',
-        col : '@',
-        readOnly : '=',
-	},
-    controller: function($scope)
-    {
-        "use strict";
-        $scope.displayButton = false;
-
-        $scope.saveModel = function() {
-          $scope.onSave();
-        };
+      model: '=',
+      property: '@',
+      onSave: '&',
+      placeholder: '@',
+      editclass: '@',
+      width: '@',
+      row: '@',
+      col: '@',
+      readOnly: '=',
     },
-    compile: function(element, attrs){
-       if (!attrs.width) { attrs.width = '100%'; }
-       if (!attrs.readOnly) { attrs.readOnly = false; }
+    controller: function($scope) {
+      "use strict";
+      $scope.displayButton = false;
+
+      $scope.saveModel = function() {
+        $scope.onSave();
+      };
+    },
+    compile: function(element, attrs) {
+      if (!attrs.width) {
+        attrs.width = '100%';
+      }
+      if (!attrs.readOnly) {
+        attrs.readOnly = false;
+      }
     },
 
     templateUrl: 'static/js/app/templates/inline-textarea.html'
