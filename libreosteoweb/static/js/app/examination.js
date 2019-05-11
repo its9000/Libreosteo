@@ -181,10 +181,6 @@ examination.directive('examination', ['ExaminationServ', function(ExaminationSer
         $scope.updateDeleteTrigger();
       });
 
-      $scope.$watch('model.date', function(newValue, oldValue) {
-        console.log("newValue = "+newValue+", oldValue = "+oldValue);
-      });
-
       $scope.updateDeleteTrigger = function() {
         if ($scope.model == null) {
           $scope.triggerEditForm.delete = false;

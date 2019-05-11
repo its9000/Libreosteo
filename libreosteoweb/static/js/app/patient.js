@@ -383,30 +383,31 @@ patient.controller('PatientCtrl', ['$scope', '$state', '$stateParams', '$filter'
 
     // Handle the examination object to be saved.
     $scope.saveExamination = function(examinationToSave) {
+      var modelToSave = examinationToSave;
       if (!examinationToSave) {
-        examinationToSave = $scope.newExamination;
+        modelToSave = $scope.newExamination;
       }
       var localExamination;
-      if (!examinationToSave.id) {
-        localExamination = ExaminationServ.add(examinationToSave, function(value) {
+      if (!modelToSave.id) {
+        localExamination = ExaminationServ.add(modelToSave, function(value) {
           Object.keys(value).forEach(function(key) {
-            $scope.newExamination[key] = value[key];
+            if (key == 'date') {
+              $scope.newExamination[key] = new Date(value[key]);
+            } else {
+              $scope.newExamination[key] = value[key];
+            }
           });
           $scope.examinations = $scope.getOrderedExaminations($stateParams.patientId);
         });
       } else {
         localExamination = ExaminationServ.save({
-          examinationId: examinationToSave.id
-        }, examinationToSave, function(value) {
+          examinationId: modelToSave.id
+        }, modelToSave, function(value) {
           $scope.examinations = $scope.getOrderedExaminations($stateParams.patientId);
         });
-        localExamination.date = new Date(localExamination.date);
       }
+      localExamination.date = new Date(localExamination.date);
       $scope.updateDeleteTrigger();
-      if (!examinationToSave) {
-        console.log("copy into newExamination the result");
-        angular.copy(localExamination, $scope.newExamination);
-      }
       return localExamination;
     };
 

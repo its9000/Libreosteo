@@ -37,7 +37,7 @@ timeline.directive('timeline', function() {
             examinationId: examinationId
           }, function(data) {
             $scope.archiveExamination.data = data;
-            $scope.archiveExamination.data.date = new Date(data.date)
+            $scope.archiveExamination.data.date = new Date(data.date);
             loEditFormManager.available = true;
 
           });
@@ -48,8 +48,8 @@ timeline.directive('timeline', function() {
           ExaminationServ.get({
             examinationId: examinationId
           }, function(data) {
-            data.date = new Date(data.date);
             $scope.archiveExamination.data = data;
+            $scope.archiveExamination.data.date = new Date(data.date);
             loEditFormManager.available = true;
           });
         }
