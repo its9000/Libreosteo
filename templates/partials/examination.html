@@ -16,7 +16,7 @@
         <div class="col-md-5">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                  <span e-class="polyfill-updatable examinationdate" editable-date="model.date" ng-if="model.status == 0 || model.status == 3" onshow="updateComponentPolyfill()">
+                  <span e-class="polyfill-updatable examinationdate" e-max="{$ dateLimit().max $}" editable-date="model.date" ng-if="model.status == 0 || model.status == 3" onshow="updateComponentPolyfill()">
                     {% trans 'Session of ' %} {$ model.date | date : 'longDate' $} {% trans 'by'%} <span class="text-uppercase">{$ model.therapeut_detail.last_name $}</span> {$ model.therapeut_detail.first_name $}
                   </span>
                   <span ng-if="model.invoices.length > 0">

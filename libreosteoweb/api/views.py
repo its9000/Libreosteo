@@ -23,7 +23,7 @@ import zipfile
 
 from rest_framework import pagination, viewsets, status
 from rest_framework.decorators import detail_route, list_route
-from rest_framework.exceptions import ValidationError,PermissionDenied,ParseError 
+from rest_framework.exceptions import ValidationError,PermissionDenied,ParseError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
@@ -239,7 +239,7 @@ class ExaminationViewSet(viewsets.ModelViewSet):
         current_examination = self.get_object()
         serializer = apiserializers.ExaminationInvoicingSerializer(data=request.data)
         return self._invoice_examination(current_examination, serializer)
-        
+
     def generate_invoice(self, invoicingSerializerData):
         officesettings = models.OfficeSettings.objects.all()[0]
         therapeutsettings = models.TherapeutSettings.objects.filter(user=self.request.user)[0]
@@ -391,7 +391,7 @@ class OfficeSettingsView(viewsets.ModelViewSet):
                     settings_event_tracer(serializer.instance, self.request.user, asked_value)
                     serializer.save()
                 else :
-                    raise PermissionDenied(detail="invoice start sequence could not be applied") 
+                    raise PermissionDenied(detail="invoice start sequence could not be applied")
             else :
                 serializer.validated_data['invoice_start_sequence'] = serializer.instance.invoice_start_sequence
                 serializer.save()

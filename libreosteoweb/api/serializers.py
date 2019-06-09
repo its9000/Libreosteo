@@ -28,6 +28,7 @@ from .utils import NetworkHelper
 from django.db.models import Max
 from .utils import convert_to_long
 from libreosteoweb.api.utils import _unicode
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -37,10 +38,9 @@ class WithPkMixin(object):
 
 def check_birth_date(value):
     if value > date.today():
-        raise serializers.ValidationError({
-            'birth_date' :
+        raise serializers.ValidationError(
                 _('Birth date is invalid')
-        })
+        )
 
 class PatientSerializer (serializers.ModelSerializer):
     current_user_operation = None
@@ -127,6 +127,10 @@ class ExaminationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Examination
         fields= '__all__'
+    def validate_date(self, value):
+        if value > timezone.now():
+            return serializers.ValidationError(_('Examination date is invalid.'))
+        return value
 
 class CheckSerializer(serializers.Serializer):
     bank = serializers.CharField(required=False, allow_null=True)

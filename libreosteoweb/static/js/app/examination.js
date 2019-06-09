@@ -135,6 +135,13 @@ examination.directive('examination', ['ExaminationServ', function(ExaminationSer
           return gettext('not documented');
         }
       };
+      
+      $scope.dateLimit = function() {
+        var today = new Date();
+        return {
+          max : today.toISOString().split('T')[0]
+        }
+      }
 
       $scope.examinationSettings = {
         orl: false,
