@@ -26,7 +26,7 @@ from django.conf import settings
 from Libreosteo.standalone import application
 from django.http import HttpResponseServerError
 try:
-    import ConfigParser    
+    import ConfigParser
 except ModuleNotFoundError:
     import configparser as ConfigParser
 
@@ -195,9 +195,12 @@ class HTTPLogger(_cplogging.LogManager):
             self.error(traceback=True)
 
 if __name__ == '__main__':
-    DATA_FOLDER = os.path.dirname(__file__)
+    if "__file__" :
+        DATA_FOLDER = os.path.dirname("__file__")
+    else :
+        DATA_FOLDER = os.path.dirname(sys.argv[0])
     if getattr(sys, 'frozen', False):
-        SITE_ROOT = os.path.split(os.path.split(os.path.split(os.path.dirname(os.path.realpath(__file__)))[0])[0])[0]
+        SITE_ROOT = os.path.split(os.path.split(os.path.split(os.path.dirname(os.path.realpath("__file__")))[0])[0])[0]
         DATA_FOLDER = SITE_ROOT
         if (getattr(sys, 'frozen', False) == 'macosx_app'):
     	    DATA_FOLDER = os.path.join( os.path.join( os.path.join( os.environ['HOME'], 'Library'), 'Application Support' ), 'Libreosteo')
@@ -264,7 +267,7 @@ if __name__ == '__main__':
 	        'db': {
 	            'handlers': ['console'],
 	            'level': 'INFO' ,
-	            'propagate':True 
+	            'propagate':True
 	        },
                 'django': {
                     'handlers': ['console'],
